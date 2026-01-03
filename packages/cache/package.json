@@ -1,0 +1,35 @@
+{
+    "name": "@monstermann/cache",
+    "type": "module",
+    "version": "0.0.0",
+    "description": "Functional cache utilities.",
+    "author": "Michael Ostermann <michaelostermann@me.com>",
+    "license": "MIT",
+    "homepage": "https://MichaelOstermann.github.io/cache",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MichaelOstermann/cache.git"
+    },
+    "bugs": {
+        "url": "https://github.com/MichaelOstermann/cache/issues"
+    },
+    "keywords": [],
+    "sideEffects": false,
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs"
+        },
+        "./*": "./dist/*"
+    },
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "bundle": "tsdown"
+    },
+    "dependencies": {}
+}
