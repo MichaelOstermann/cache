@@ -18,6 +18,9 @@ import { has } from "./has.js";
 import { hasAll } from "./hasAll.js";
 import { hasAny } from "./hasAny.js";
 import { hasNone } from "./hasNone.js";
+import { LFU } from "./LFU.js";
+import { LFUCache } from "./LFU.js";
+import { LFUCacheEntry } from "./LFU.js";
 import { LRU } from "./LRU.js";
 import { LRUCache } from "./LRU.js";
 import { LRUTTL } from "./LRUTTL.js";
@@ -53,6 +56,7 @@ declare namespace Cache {
         hasAll,
         hasAny,
         hasNone,
+        LFU,
         LRU,
         LRUTTL,
         Map,
@@ -67,6 +71,8 @@ declare namespace Cache {
 export {
     Cache,
     FIFOCache,
+    LFUCache,
+    LFUCacheEntry,
     LRUCache,
     LRUTTLCache,
     MapCache,

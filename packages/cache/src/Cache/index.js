@@ -17,6 +17,7 @@ import { has } from "./has.js";
 import { hasAll } from "./hasAll.js";
 import { hasAny } from "./hasAny.js";
 import { hasNone } from "./hasNone.js";
+import { LFU } from "./LFU.js";
 import { LRU } from "./LRU.js";
 import { LRUTTL } from "./LRUTTL.js";
 import { Map } from "./Map.js";
@@ -40,6 +41,7 @@ export const Cache = {
     hasAll,
     hasAny,
     hasNone,
+    LFU,
     LRU,
     LRUTTL,
     Map,

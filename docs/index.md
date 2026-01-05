@@ -6,7 +6,7 @@ aside: true
 
 <Badge type="info" class="size">
     <span>Minified</span>
-    <span>4.43 KB</span>
+    <span>4.14 KB</span>
 </Badge>
 
 <Badge type="info" class="size">
