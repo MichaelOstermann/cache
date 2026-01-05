@@ -1,7 +1,11 @@
 # LRU
 
 ```ts
-function Cache.LRU<K, V>(options: { max: number }): LRUCache<K, V>
+function Cache.LRU<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUCache<K, V>
 ```
 
 Creates a cache with an LRU (Least Recently Used) eviction policy backed by a Map. When the cache exceeds `max` size, the least recently accessed entry is removed. Both reads and writes update recency.

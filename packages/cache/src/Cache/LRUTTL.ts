@@ -20,7 +20,12 @@ export interface LRUTTLCache<K, V> extends Cache<K, V> {
  * # LRUTTL
  *
  * ```ts
- * function Cache.LRUTTL<K, V>(options: { max: number, ttl: number }): LRUTTLCache<K, V>
+ * function Cache.LRUTTL<K, V>(options: {
+ *     max: number
+ *     ttl: number
+ *     onHit?: (key: K) => void
+ *     onMiss?: (key: K) => void
+ * }): LRUTTLCache<K, V>
  * ```
  *
  * Creates a cache with both LRU (Least Recently Used) eviction and TTL (Time To Live) expiration backed by a Map. Entries are evicted when the cache exceeds `max` size or when they exceed the `ttl` duration in milliseconds.
@@ -62,10 +67,16 @@ export interface LRUTTLCache<K, V> extends Cache<K, V> {
  * ```
  *
  */
-export function LRUTTL<K, V>(options: { max: number, ttl: number }): LRUTTLCache<K, V> {
+export function LRUTTL<K, V>(options: {
+    max: number
+    ttl: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUTTLCache<K, V> {
     let max = validateMax("Cache.LRUTTL({ max })", options.max)
     let ttl = validateTTL("Cache.LRUTTL({ ttl })", options.ttl)
     const entries = new Map<K, LRUTTLCacheEntry<V>>()
+    const { onHit, onMiss } = options
 
     function evict(): void {
         const now = Date.now()
@@ -90,11 +101,14 @@ export function LRUTTL<K, V>(options: { max: number, ttl: number }): LRUTTLCache
             evict()
             const entry = entries.get(key)
             if (entry) {
+                onHit?.(key)
                 entry.date = Date.now()
                 entries.delete(key)
                 entries.set(key, entry)
+                return entry.value
             }
-            return entry?.value
+            onMiss?.(key)
+            return undefined
         },
         has(key) {
             evict()

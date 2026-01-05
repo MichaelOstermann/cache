@@ -8,7 +8,10 @@ export interface WeakMapCache<K extends WeakKey, V> extends Cache<K, V> {
  * # WeakMap
  *
  * ```ts
- * function Cache.WeakMap<K extends WeakKey, V>(): WeakMapCache<K, V>
+ * function Cache.WeakMap<K extends WeakKey, V>(options?: {
+ *     onHit?: (key: K) => void
+ *     onMiss?: (key: K) => void
+ * }): WeakMapCache<K, V>
  * ```
  *
  * Creates a cache backed by a JavaScript `WeakMap`. Keys must be objects and are held weakly, allowing them to be garbage collected when no other references exist.
@@ -42,15 +45,24 @@ export interface WeakMapCache<K extends WeakKey, V> extends Cache<K, V> {
  * ```
  *
  */
-export function WeakMap<K extends WeakKey, V>(): WeakMapCache<K, V> {
+export function WeakMap<K extends WeakKey, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): WeakMapCache<K, V> {
     const entries = new globalThis.WeakMap<K, V>()
+    const { onHit, onMiss } = options ?? {}
     return {
         data: { entries },
         del(key) {
             entries.delete(key)
         },
         get(key) {
-            return entries.get(key)
+            if (entries.has(key)) {
+                onHit?.(key)
+                return entries.get(key)
+            }
+            onMiss?.(key)
+            return undefined
         },
         has(key) {
             return entries.has(key)

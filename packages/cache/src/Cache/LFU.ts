@@ -22,7 +22,11 @@ export interface LFUCache<K, V> extends Cache<K, V> {
  * # LFU
  *
  * ```ts
- * function Cache.LFU<K, V>(options: { max: number }): LFUCache<K, V>
+ * function Cache.LFU<K, V>(options: {
+ *     max: number
+ *     onHit?: (key: K) => void
+ *     onMiss?: (key: K) => void
+ * }): LFUCache<K, V>
  * ```
  *
  * Creates a cache with an LFU (Least Frequently Used) eviction policy backed by a Map and doubly linked list. When the cache exceeds `max` size, the least frequently accessed entry is removed. Both reads and writes increment the access frequency counter.
@@ -69,9 +73,14 @@ export interface LFUCache<K, V> extends Cache<K, V> {
  * ```
  *
  */
-export function LFU<K, V>(options: { max: number }): LFUCache<K, V> {
+export function LFU<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LFUCache<K, V> {
     let max = validateMax("Cache.LFU({ max })", options.max)
     const entries = new Map<K, LFUCacheEntry<K, V>>()
+    const { onHit, onMiss } = options
     const data: LFUCache<K, V>["data"] = {
         entries,
         first: undefined,
@@ -141,10 +150,12 @@ export function LFU<K, V>(options: { max: number }): LFUCache<K, V> {
         get(key) {
             const entry = entries.get(key)
             if (entry) {
+                onHit?.(key)
                 entry.count++
                 reposition(entry)
                 return entry.value
             }
+            onMiss?.(key)
             return undefined
         },
         has(key) {

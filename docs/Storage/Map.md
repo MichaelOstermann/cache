@@ -1,7 +1,10 @@
 # Map
 
 ```ts
-function Cache.Map<K, V>(): MapCache<K, V>
+function Cache.Map<K, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): MapCache<K, V>
 ```
 
 Creates a cache backed by a Map with no eviction policy.

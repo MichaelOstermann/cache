@@ -10,7 +10,11 @@ export interface LRUCache<K, V> extends Cache<K, V> {
  * # LRU
  *
  * ```ts
- * function Cache.LRU<K, V>(options: { max: number }): LRUCache<K, V>
+ * function Cache.LRU<K, V>(options: {
+ *     max: number
+ *     onHit?: (key: K) => void
+ *     onMiss?: (key: K) => void
+ * }): LRUCache<K, V>
  * ```
  *
  * Creates a cache with an LRU (Least Recently Used) eviction policy backed by a Map. When the cache exceeds `max` size, the least recently accessed entry is removed. Both reads and writes update recency.
@@ -47,9 +51,14 @@ export interface LRUCache<K, V> extends Cache<K, V> {
  * ```
  *
  */
-export function LRU<K, V>(options: { max: number }): LRUCache<K, V> {
+export function LRU<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUCache<K, V> {
     let max = validateMax("Cache.LRU({ max })", options.max)
     const entries = new Map<K, V>()
+    const { onHit, onMiss } = options
     return {
         data: { entries },
         del(key) {
@@ -57,11 +66,13 @@ export function LRU<K, V>(options: { max: number }): LRUCache<K, V> {
         },
         get(key) {
             if (entries.has(key)) {
+                onHit?.(key)
                 const entry = entries.get(key)!
                 entries.delete(key)
                 entries.set(key, entry)
                 return entry
             }
+            onMiss?.(key)
             return undefined
         },
         has(key) {

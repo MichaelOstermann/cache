@@ -508,7 +508,11 @@ Cache.get(cache, "baz"); // 200
 ### FIFO
 
 ```ts
-function Cache.FIFO<K, V>(options: { max: number }): FIFOCache<K, V>
+function Cache.FIFO<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): FIFOCache<K, V>
 ```
 
 Creates a cache with a FIFO (First In, First Out) eviction policy backed by a Map. When the cache exceeds `max` size, the oldest entry is removed.
@@ -547,7 +551,11 @@ Cache.has(cache, "b"); // false
 ### LFU
 
 ```ts
-function Cache.LFU<K, V>(options: { max: number }): LFUCache<K, V>
+function Cache.LFU<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LFUCache<K, V>
 ```
 
 Creates a cache with an LFU (Least Frequently Used) eviction policy backed by a Map and doubly linked list. When the cache exceeds `max` size, the least frequently accessed entry is removed. Both reads and writes increment the access frequency counter.
@@ -596,7 +604,11 @@ Cache.has(cache, "d"); // false
 ### LRU
 
 ```ts
-function Cache.LRU<K, V>(options: { max: number }): LRUCache<K, V>
+function Cache.LRU<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUCache<K, V>
 ```
 
 Creates a cache with an LRU (Least Recently Used) eviction policy backed by a Map. When the cache exceeds `max` size, the least recently accessed entry is removed. Both reads and writes update recency.
@@ -635,7 +647,12 @@ Cache.has(cache, "c"); // true
 ### LRUTTL
 
 ```ts
-function Cache.LRUTTL<K, V>(options: { max: number, ttl: number }): LRUTTLCache<K, V>
+function Cache.LRUTTL<K, V>(options: {
+    max: number
+    ttl: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUTTLCache<K, V>
 ```
 
 Creates a cache with both LRU (Least Recently Used) eviction and TTL (Time To Live) expiration backed by a Map. Entries are evicted when the cache exceeds `max` size or when they exceed the `ttl` duration in milliseconds.
@@ -679,7 +696,10 @@ cache.setTTL(10000); // 10 seconds
 ### Map
 
 ```ts
-function Cache.Map<K, V>(): MapCache<K, V>
+function Cache.Map<K, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): MapCache<K, V>
 ```
 
 Creates a cache backed by a Map with no eviction policy.
@@ -712,7 +732,10 @@ cache.data.entries.size; // 2
 ### WeakMap
 
 ```ts
-function Cache.WeakMap<K extends WeakKey, V>(): WeakMapCache<K, V>
+function Cache.WeakMap<K extends WeakKey, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): WeakMapCache<K, V>
 ```
 
 Creates a cache backed by a JavaScript `WeakMap`. Keys must be objects and are held weakly, allowing them to be garbage collected when no other references exist.

@@ -1,7 +1,11 @@
 # FIFO
 
 ```ts
-function Cache.FIFO<K, V>(options: { max: number }): FIFOCache<K, V>
+function Cache.FIFO<K, V>(options: {
+    max: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): FIFOCache<K, V>
 ```
 
 Creates a cache with a FIFO (First In, First Out) eviction policy backed by a Map. When the cache exceeds `max` size, the oldest entry is removed.

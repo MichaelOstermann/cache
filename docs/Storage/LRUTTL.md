@@ -1,7 +1,12 @@
 # LRUTTL
 
 ```ts
-function Cache.LRUTTL<K, V>(options: { max: number, ttl: number }): LRUTTLCache<K, V>
+function Cache.LRUTTL<K, V>(options: {
+    max: number
+    ttl: number
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): LRUTTLCache<K, V>
 ```
 
 Creates a cache with both LRU (Least Recently Used) eviction and TTL (Time To Live) expiration backed by a Map. Entries are evicted when the cache exceeds `max` size or when they exceed the `ttl` duration in milliseconds.

@@ -1,7 +1,10 @@
 # WeakMap
 
 ```ts
-function Cache.WeakMap<K extends WeakKey, V>(): WeakMapCache<K, V>
+function Cache.WeakMap<K extends WeakKey, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): WeakMapCache<K, V>
 ```
 
 Creates a cache backed by a JavaScript `WeakMap`. Keys must be objects and are held weakly, allowing them to be garbage collected when no other references exist.

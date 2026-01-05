@@ -8,7 +8,10 @@ export interface MapCache<K, V> extends Cache<K, V> {
  * # Map
  *
  * ```ts
- * function Cache.Map<K, V>(): MapCache<K, V>
+ * function Cache.Map<K, V>(options?: {
+ *     onHit?: (key: K) => void
+ *     onMiss?: (key: K) => void
+ * }): MapCache<K, V>
  * ```
  *
  * Creates a cache backed by a Map with no eviction policy.
@@ -39,15 +42,24 @@ export interface MapCache<K, V> extends Cache<K, V> {
  * ```
  *
  */
-export function Map<K, V>(): MapCache<K, V> {
+export function Map<K, V>(options?: {
+    onHit?: (key: K) => void
+    onMiss?: (key: K) => void
+}): MapCache<K, V> {
     const entries = new globalThis.Map<K, V>()
+    const { onHit, onMiss } = options ?? {}
     return {
         data: { entries },
         del(key) {
             entries.delete(key)
         },
         get(key) {
-            return entries.get(key)
+            if (entries.has(key)) {
+                onHit?.(key)
+                return entries.get(key)
+            }
+            onMiss?.(key)
+            return undefined
         },
         has(key) {
             return entries.has(key)
