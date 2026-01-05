@@ -4,8 +4,6 @@
 // dprint-ignore-file
 // biome-ignore lint: disable
 
-import { ARC } from "./ARC.js";
-import { ARCCache } from "./ARC.js";
 import { FIFO } from "./FIFO.js";
 import { FIFOCache } from "./FIFO.js";
 import { get } from "./get.js";
@@ -42,7 +40,6 @@ interface Cache<K, V> {
 
 declare namespace Cache {
     export {
-        ARC,
         FIFO,
         get,
         getAll,
@@ -69,7 +66,6 @@ declare namespace Cache {
 
 export {
     Cache,
-    ARCCache,
     FIFOCache,
     LRUCache,
     LRUTTLCache,

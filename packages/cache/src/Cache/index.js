@@ -4,7 +4,6 @@
 // dprint-ignore-file
 // biome-ignore lint: disable
 
-import { ARC } from "./ARC.js";
 import { FIFO } from "./FIFO.js";
 import { get } from "./get.js";
 import { getAll } from "./getAll.js";
@@ -28,7 +27,6 @@ import { setAll } from "./setAll.js";
 import { WeakMap } from "./WeakMap.js";
 
 export const Cache = {
-    ARC,
     FIFO,
     get,
     getAll,

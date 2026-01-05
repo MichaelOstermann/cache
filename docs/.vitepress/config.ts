@@ -26,7 +26,6 @@ export default defineConfig({
         },
         sidebar: [
             { base: "/Storage/", text: "Storage", items: [
-                { link: "ARC", text: "ARC" },
                 { link: "FIFO", text: "FIFO" },
                 { link: "LRU", text: "LRU" },
                 { link: "LRUTTL", text: "LRUTTL" },
