@@ -1,3 +1,6 @@
+> [!WARNING]
+> This package is no longer maintained.
+
 <div align="center">
 
 <h1>cache</h1>
